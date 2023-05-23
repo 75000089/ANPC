@@ -1,16 +1,15 @@
 #This function handles the shape (SH), size (SZ) and alpha (AL) input for the pcagrid.
 
-plotinput<- function(screecumulativethresholdobject, SH, SZ, AL){
+plotinput<- function(screecumulativethresholdobject, CO, SH, SZ, AL){
 
   output <- screecumulativethresholdobject
 
   # Get required data for plotting
-
-  #shape
-  SH <- if(class(SH) == "NULL") {
-    SH = SH
-  }else if(class(SH) == "character"){
-    SH = output$data$pcdf[,SH]
+  #colour
+  CO <- if(class(CO) == "numeric") {
+    CO = CO
+  }else if(class(CO) == "character"){
+    CO = output$data$pcdf[,CO]
   }
 
   #size
@@ -27,10 +26,17 @@ plotinput<- function(screecumulativethresholdobject, SH, SZ, AL){
     AL = output$data$pcdf[,AL]
   }
 
-  output<- append(output, list(SH = SH,
-                          SZ = SZ,
-                          AL = AL))
-  #output<-list.append(output, forplots)
-  #output<-append(output, forplots)
+  #shape
+  SH <- if(class(SH) == "NULL") {
+    SH = SH
+  }else if(class(SH) == "character"){
+    SH = output$data$pcdf[,SH]
+  }
+
+  output<- append(output, list(CO=CO,
+                              SH = SH,
+                              SZ = SZ,
+                              AL = AL))
+
 return(output)
 }

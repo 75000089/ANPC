@@ -44,11 +44,5 @@ return(list(data = a,
                          screePlot = Screeplot,
                          cumulativeVariance = CumulativeVariance,
                          thresholdTable = ThresholdTable)))
-# return(append(a, list(threshold=t)))
 
-# return(append(a, list(threshold=t),
-#             list(plots = list(screeCumulativeThreshold = screecumulativethresholdplot,
-#                               screePlot = Screeplot,
-#                               cumulativeVariance = CumulativeVariance,
-#                               thresholdTable= ThresholdTable))))
 }
