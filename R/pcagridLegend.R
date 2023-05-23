@@ -1,43 +1,16 @@
 #plot of PC1 vs PC2, used for the legend of the PCA grid.
-
-pcagridlegend<-function(pcresultsobject, x = "PC1", y = "PC2", colour, SH, AL, SZ){
-
-  a <- pcresultsobject
-
+pcagridlegend<-function(screecumulativethresholdobject, x = "PC1", y = "PC2", CO, SH, AL, SZ, COtitle, SHtitle, SZtitle, ALtitle){
   # Get required data for plotting
+  output <- plotinput(screecumulativethresholdobject, CO, SH, SZ, AL)
 
-  #shape
-  SH <- if(class(SH) == "NULL") {
-    SH = SH
-  }else if(class(SH) == "character"){
-    SH = a$pcdf[,SH]
-  }
-  #SH = a$pcdf$SH
-
-  #size
-  SZ <- if(class(SZ) == "numeric") {
-    SZ = SZ
-  }else if (class(SZ) == "character"){
-    SZ = a$pcdf[,SZ]
-  }
-  #SZ = a$pcdf$SZ
-
-  #alpha
-  AL <- if(class(AL) == "numeric") {
-    AL = AL
-  }else if (class(AL) == "character"){
-    AL = a$pcdf[,AL]
-  }
-  #AL = a$pcdf$AL
-
-gu <- if(class(SH) == "character" & class(SZ) == "numeric" & class(AL) == "numeric") {
+  gu <- if(class(SH) == "character" & class(SZ) == "numeric" & class(AL) == "numeric") {
     guides(alpha = "none", size = "none")
   } else if (class(SH) == "NULL" & class(SZ) == "character" & class(AL) == "numeric") {
     guides(alpha = "none", shape = "none")
   } else if (class(SH) == "NULL" & class(SZ) == "numeric" & class(AL) == "character") {
     guides(shape = "none", size = "none")
   } else if (class(SH) == "character" & class(SZ) == "character" & class(AL) == "numeric") {
-    guides(alpha = "none")
+    guides(alpha = "none" )
   } else if (class(SH) == "character" & class(SZ) == "numeric" & class(AL) == "character") {
     guides(size = "none")
   } else if (class(SH) == "NULL" & class(SZ) == "character" & class(AL) == "character") {
@@ -48,12 +21,67 @@ gu <- if(class(SH) == "character" & class(SZ) == "numeric" & class(AL) == "numer
     guides(shape = "none", size = "none", alpha = "none")
   }
 
-test <- ggplot(data = a$pcdf, aes(x = .data[[x]], y = .data[[y]], color = .data[[colour]], shape = SH, alpha = AL, size = SZ)) +
-        geom_point() +
-        gu +
-        theme_minimal()
-return(test)
+  test <- ggplot(data = output$data$pcdf, aes(x = .data[[x]], y = .data[[y]], color = output$CO, shape = output$SH, alpha = output$AL, size = output$SZ)) +
+    geom_point() +
+    gu +
+    labs(color = COtitle, shape = SHtitle, size = SZtitle, alpha = ALtitle ) +
+    theme_minimal()
+  return(test)
 }
+# pcagridlegend<-function(pcresultsobject, x = "PC1", y = "PC2", colour, SH, AL, SZ){
+#
+#   a <- pcresultsobject
+#
+#   # Get required data for plotting
+#
+#   #shape
+#   SH <- if(class(SH) == "NULL") {
+#     SH = SH
+#   }else if(class(SH) == "character"){
+#     SH = a$pcdf[,SH]
+#   }
+#   #SH = a$pcdf$SH
+#
+#   #size
+#   SZ <- if(class(SZ) == "numeric") {
+#     SZ = SZ
+#   }else if (class(SZ) == "character"){
+#     SZ = a$pcdf[,SZ]
+#   }
+#   #SZ = a$pcdf$SZ
+#
+#   #alpha
+#   AL <- if(class(AL) == "numeric") {
+#     AL = AL
+#   }else if (class(AL) == "character"){
+#     AL = a$pcdf[,AL]
+#   }
+#   #AL = a$pcdf$AL
+#
+# gu <- if(class(SH) == "character" & class(SZ) == "numeric" & class(AL) == "numeric") {
+#     guides(alpha = "none", size = "none")
+#   } else if (class(SH) == "NULL" & class(SZ) == "character" & class(AL) == "numeric") {
+#     guides(alpha = "none", shape = "none")
+#   } else if (class(SH) == "NULL" & class(SZ) == "numeric" & class(AL) == "character") {
+#     guides(shape = "none", size = "none")
+#   } else if (class(SH) == "character" & class(SZ) == "character" & class(AL) == "numeric") {
+#     guides(alpha = "none")
+#   } else if (class(SH) == "character" & class(SZ) == "numeric" & class(AL) == "character") {
+#     guides(size = "none")
+#   } else if (class(SH) == "NULL" & class(SZ) == "character" & class(AL) == "character") {
+#     guides(shape = "none")
+#   } else if (class(SH) == "character" & class(SZ) == "character" & class(AL) == "character") {
+#     guides()
+#   } else if (class(SH) == "NULL" & class(SZ) == "numeric" & class(AL) == "numeric") {
+#     guides(shape = "none", size = "none", alpha = "none")
+#   }
+#
+# test <- ggplot(data = a$pcdf, aes(x = .data[[x]], y = .data[[y]], color = .data[[colour]], shape = SH, alpha = AL, size = SZ)) +
+#         geom_point() +
+#         gu +
+#         theme_minimal()
+# return(test)
+# }
 # pcagridlegend<-function(data = pcdf, x = "PC1", y = "PC2", colour, SH, AL, SZ){
 #
 #     test<-ggplot(data = pcdf, aes(x = .data[[x]], y = .data[[y]], color = .data[[colour]], shape = SH, alpha = AL, size = SZ)) +
