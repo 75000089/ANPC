@@ -1,16 +1,21 @@
-#Make PCA grid with ggpairs using the threshold, explainedvariance ratio,
+#Make PCA grid with ggpairs
 
-pcagrid <-function(screecumulativethresholdobject, CO, SH = NULL, SZ = 0.2, AL = 1, COtitle, SHtitle = "NULL", SZtitle = "NULL", ALtitle = "NULL"){
+pcaGrid <-function(screeCumulativeThresholdObject, CO, SH = NULL, SZ = 1, AL = 0.5, COtitle, SHtitle = "NULL", SZtitle = "NULL", ALtitle = "NULL"){
 
-  output <- plotinput(screecumulativethresholdobject = screecumulativethresholdobject, CO = CO, SH = SH, SZ = SZ, AL = AL)
-  thresh <- output$data$treshold
-  test <- pcagridlegend(screecumulativethresholdobject, x = "PC1", y = "PC2", CO, SH, AL, SZ, COtitle, SHtitle, SZtitle, ALtitle)
+  output <- plotInput(screeCumulativeThresholdObject, CO, SH, SZ, AL)
+  thresh <- output$data$threshold
+  test <- pcaGridLegend(screeCumulativeThresholdObject, x = "PC1", y = "PC2", CO, SH, AL, SZ, COtitle, SHtitle, SZtitle, ALtitle)
+
+#Loop for creating titles of "PC(explained variance %)"
+
   title <- list()
   for (i in 1:thresh) {
-    title[[i]] <- paste0('PC', i, ' (', round(output$data$explained_variance_ratio[i], 1), '%)')
+    title[[i]] <- paste0('PC', i, ' (', round(output$data$explainedVarianceRatio[i], 1), '%)')
   }
   title<-unlist(title)
-  #gp <- geom_point(aes(colour = output$CO, size = output$SZ), shape = output$SH, alpha = output$AL)
+
+#combinations for which aesthetics are set to a variable and those set to a single value. Colour is always defined by a variable.
+
   gp <- if(class(SH) == "character" & class(SZ) == "numeric" & class(AL) == "numeric") {
           geom_point(aes(colour = output$CO, shape = output$SH), size = output$SZ, alpha = output$AL)
         } else if (class(SH) == "NULL" & class(SZ) == "character" & class(AL) == "numeric") {
@@ -28,6 +33,8 @@ pcagrid <-function(screecumulativethresholdobject, CO, SH = NULL, SZ = 0.2, AL =
         } else if (class(SH) == "NULL" & class(SZ) == "numeric" & class(AL) == "numeric") {
           geom_point(aes(colour = output$CO), shape = output$SH, size = output$SZ, alpha = output$AL)
         }
+
+#create the PCA grid
 
   pcagridplot<-GGally::ggpairs(data = output$data$pcdf[,1:thresh],
                                columnLabels = c(title),
@@ -47,6 +54,8 @@ pcagrid <-function(screecumulativethresholdobject, CO, SH = NULL, SZ = 0.2, AL =
                                panel.grid.major = element_blank(),
                                panel.grid.minor = element_blank(),
                                panel.border = element_rect(fill = NA,colour = "grey35"))
+
+#remove empty grid spaces (lower and diagonal)
 
   final_plot <- gpairs_lower(pcagridplot)
   return(final_plot)
