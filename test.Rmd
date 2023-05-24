@@ -61,15 +61,13 @@ loadPackages(myPackages = c("ggplot2",
                             "cowplot",
                             "gridExtra",
                             "rlist"))
-#create pcresults object
+#1) create pcresults object
 a<- pcResults(BIOspcglyc[,1:8], annotation = BIOspcglyc[,-1:-8])
 
-#create screeCumulativeThresholdObject
+#2) create screeCumulativeThresholdObject
 b <- screeCumulativeThreshold(pcResultsObject = a, cutoff = 95)
 
-#b<- plotInput(screeCumulativeThresholdObject = output, CO = "covid_status", SH = "sex", SZ = 5, AL = 0.4)
-
-#gridplot tests
+#3) gridplot tests various combinations
 ##working
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", COtitle = "covid")
 pcaGrid(screeCumulativeThresholdObject = b, CO = 1, COtitle = "covid")
