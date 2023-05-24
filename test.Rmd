@@ -64,18 +64,26 @@ loadPackages(myPackages = c("ggplot2",
 
 a<- pcresults(BIOspcglyc[,1:8], annotation = BIOspcglyc[,-1:-8])
 output <- screecumulativethreshold(pcresultsobject = a)
-b<- plotinput(screecumulativethresholdobject = output, CO = "covid_status", SH = "sex", SZ = "age", AL = 0.4)
+b<- plotinput(screecumulativethresholdobject = output, CO = "covid_status", SH = "sex", SZ = 5, AL = 0.4)
 
 #gridplot tests
 ##working
 pcagrid(screecumulativethresholdobject = output, CO = "covid_status", COtitle = "covid")
 pcagrid(screecumulativethresholdobject = output, CO = 1, COtitle = "covid")
-pcagrid(screecumulativethresholdobject = output, CO = "covid_status", SZ = "age", COtitle = "covid", SZtitle = "Age")
+pcagrid(screecumulativethresholdobject = output, CO = "covid_status", SZ = "age", AL = "bmi", COtitle = "covid", SZtitle = "Age")
 
 #NOT working, plots, but wont change the aes specified with numerics
 pcagrid(screecumulativethresholdobject = output, CO = "covid_status", SZ = 0.5, COtitle = "covid", SZtitle = "Age")
-pcagrid(screecumulativethresholdobject = output, CO = "covid_status", SZ = 0.5, AL = 1, COtitle = "covid", SZtitle = "Age")
 
+
+pcagrid(screecumulativethresholdobject = output, CO = "covid_status", SH = "sex", SZ = 1, AL = 1, COtitle = "covid")
+pcagrid(screecumulativethresholdobject = output, CO = "covid_status", SH = NULL, SZ = "age", AL = 1, COtitle = "covid")
+pcagrid(screecumulativethresholdobject = output, CO = "covid_status", SH = NULL, SZ = 5, AL = "age", COtitle = "covid")
+pcagrid(screecumulativethresholdobject = output, CO = "covid_status", SH = "sex", SZ = "age", AL = 1, COtitle = "covid")
+pcagrid(screecumulativethresholdobject = output, CO = "covid_status", SH = "sex", SZ = 5, AL = "age", COtitle = "covid")
+pcagrid(screecumulativethresholdobject = output, CO = "covid_status", SH = "sex", SZ = "age", AL = "bmi", COtitle = "covid")
+pcagrid(screecumulativethresholdobject = output, CO = "covid_status", SH = NULL, SZ = "age", AL = "bmi", COtitle = "covid")
+pcagrid(screecumulativethresholdobject = output, CO = "covid_status", SH = NULL, SZ = 5, AL = 1, COtitle = "covid")
 ```
 #legend
 ```{r}
@@ -110,7 +118,7 @@ pcagridlegend<-function(screecumulativethresholdobject, x = "PC1", y = "PC2", CO
   return(test)
 }
 
-pcagridlegend(screecumulativethresholdobject = output, x = "PC1", y = "PC2", CO = "covid_status", SH="sex", AL="age", SZ=1, COtitle = "COV", SHtitle= "gender", SZtitle=NULL, ALtitle="Age")
+test <- pcagridlegend(screecumulativethresholdobject = output, x = "PC1", y = "PC2", CO = "covid_status", SH="sex", AL="age", SZ=0.1, COtitle = "COV", SHtitle= "gender", SZtitle=NULL, ALtitle="Age")
 ```
 
 #working, don't touch 
