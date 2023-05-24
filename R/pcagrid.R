@@ -57,6 +57,6 @@ pcaGrid <-function(screeCumulativeThresholdObject, CO, SH = NULL, SZ = 1, AL = 0
 
 #remove empty grid spaces (lower and diagonal)
 
-  final_plot <- gpairs_lower(pcagridplot)
+  final_plot <- gPairsLower(pcagridplot)
   return(final_plot)
 }
