@@ -61,9 +61,12 @@ loadPackages(myPackages = c("ggplot2",
                             "cowplot",
                             "gridExtra",
                             "rlist"))
-
+#create pcresults object
 a<- pcResults(BIOspcglyc[,1:8], annotation = BIOspcglyc[,-1:-8])
-b <- screeCumulativeThreshold(pcResultsObject = a)
+
+#create screeCumulativeThresholdObject
+b <- screeCumulativeThreshold(pcResultsObject = a, cutoff = 95)
+
 #b<- plotInput(screeCumulativeThresholdObject = output, CO = "covid_status", SH = "sex", SZ = 5, AL = 0.4)
 
 #gridplot tests
