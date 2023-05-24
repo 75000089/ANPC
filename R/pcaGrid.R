@@ -41,7 +41,7 @@ pcaGrid <-function(screeCumulativeThresholdObject, CO, SH = NULL, SZ = 1, AL = 0
                                diag="blank",
                                upper="blank",
                                #upper=list(continuous = my_fn1),
-                               lower=list(continuous = my_fn1),
+                               lower=list(continuous = myFn1),
                                legend = grab_legend(test),
                                progress = F,
                                switch = "both") +
