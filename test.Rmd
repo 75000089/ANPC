@@ -84,6 +84,73 @@ pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ 
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = "age", AL = "bmi", COtitle = "covid")
 pcaGrid(screeCumulativeThresholdObject = b, CO = "work_activity", SH = NULL, SZ = 5, AL = 1, COtitle = "covid")
 ```
+#combined scree and cumulative plot
+```{r}
+ggplot(data1, aes(x = date)) +
+  geom_line(aes(y = x_r), size = 2, color = "red") + 
+  geom_line(aes(y = reer/scale), size = 2, color = "blue") +
+  scale_y_continuous(
+    name = "X/GDP",
+    sec.axis = sec_axis(~.*scale, name = "REER")
+  ) +   
+  theme_bw() +
+  theme(
+    axis.title.y = element_text(color = "red", size = 13),
+    axis.title.y.right = element_text(color = "blue", size = 13)
+  ) +
+  ggtitle("Export Ratio and Real Effective Exchange Rate")
+
+ttt <- function(pcResultsObject, cutoff = 99){
+
+  a <- pcResultsObject
+  #t <- length(which(a$pcSum$`Cumulative Proportion` < cutoff))
+
+#Make cumulative variance plot
+coeff=0.5
+cumulativeVariance <- ggplot(data = a$pcSum, aes(x = `rowname`, y= a$pcdf$`Cumulative Proportion`)) +
+                      geom_line( size = 2, color = a$pcdf$`Cumulative Proportion`) + 
+                      geom_line(aes(y = a$pcdf$`Proportion of Variance`), size = 2, color = a$pcdf$`Proportion of Variance`) +
+                      scale_y_continuous(
+                        # Features of the first axis
+                        name = "Cumulative Variance Explained (%)",
+                        # Add a second axis and specify its features
+                        sec.axis = sec_axis(~.*coeff, name="Propportion of Variance (%)")) + 
+                      #theme_ipsum() +
+                      theme(axis.title.y = element_text(color = a$pcdf$`Cumulative Proportion`, size=13),
+                            axis.title.y.right = element_text(color = a$pcdf$`Proportion of Variance`, size=13)) +
+                      ggtitle("Variance") +
+                      xlab("PC") 
+  
+  scale = 0.5
+
+ggplot(a$pcSum, aes(x = `rowname`, y = `Cumulative Proportion`)) +
+  geom_line(aes(color = "red")) +
+  geom_line(aes(y = `Proportion of Variance`, color = "Cumulative Proportion")) +
+  scale_y_continuous(sec.axis = sec_axis(~.*scale, name = "Proportion of Variance (%)")) +
+  labs(x = "PC", y = "Cumulative Variance (%)", color = "") +
+  scale_color_manual(values = c("orange2", "gray30")) +
+  theme(
+    axis.title.y = element_text(color = "gray30"),
+    axis.title.y.right = element_text(color = "orange3")
+  )
+
+print(pkpd)
+  # cumulativeVariance <- ggplot(data = a$pcSum, aes(x = `rowname`)) +
+  #   geom_point(aes(y = `Cumulative Proportion`), colour = "blue") +
+  #   #geom_line(group = 1, colour = "blue") +
+  #   geom_point(aes(y = (`Proportion of Variance`)), colour = "red") +
+  #   #geom_line(group = 1, colour = "red") +
+  #   ggtitle("Cumulative Variance and Screeplot") +   
+  #   theme_bw() +
+  #   theme(axis.title.y = element_text(color = "red", size = 13),
+  #   axis.title.y.right = element_text(color = "blue", size = 13)) +
+  #   xlab("PC") 
+   
+return(cumulativeVariance)
+}
+ttt(pcResultsObject = a)
+```
+
 #legend back up don't touch
 ```{r}
 pcagridlegend<-function(screecumulativethresholdobject, x = "PC1", y = "PC2", CO, SH, AL, SZ, COtitle, SHtitle, SZtitle, ALtitle){
