@@ -69,28 +69,26 @@ b <- screeCumulativeThreshold(pcResultsObject = a, cutoff = 95)
 
 #3) gridplot tests various combinations
 ##working
-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", COtitle = "covid")
 pcaGrid(screeCumulativeThresholdObject = b, CO = 1, COtitle = "covid")
+
+pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", COtitle = "covid")
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SZ = "age", AL = "bmi", COtitle = "covid", SZtitle = "Age")
-
-
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SZ = 0.5, COtitle = "covid", SZtitle = "Age")
+pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = "age", AL = 1, COtitle = "covid")
 
-
-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = 1, AL = 1, COtitle = "covid")
-pcagrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = "age", AL = 1, COtitle = "covid")
-pcagrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = 5, AL = "age", COtitle = "covid")
-pcagrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = "age", AL = 1, COtitle = "covid")
-pcagrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = 5, AL = "age", COtitle = "covid")
-pcagrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = "age", AL = "bmi", COtitle = "covid")
-pcagrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = "age", AL = "bmi", COtitle = "covid")
-pcagrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = 5, AL = 1, COtitle = "covid")
+pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = "age", AL = 1, COtitle = "covid")
+pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = 5, AL = "age", COtitle = "covid")
+pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = "age", AL = 1, COtitle = "covid")
+pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = 5, AL = "age", COtitle = "covid")
+pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = "age", AL = "bmi", COtitle = "covid")
+pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = "age", AL = "bmi", COtitle = "covid")
+pcaGrid(screeCumulativeThresholdObject = b, CO = "work_activity", SH = NULL, SZ = 5, AL = 1, COtitle = "covid")
 ```
 #legend back up don't touch
 ```{r}
 pcagridlegend<-function(screecumulativethresholdobject, x = "PC1", y = "PC2", CO, SH, AL, SZ, COtitle, SHtitle, SZtitle, ALtitle){
   
-  output <- plotinput(screecumulativethresholdobject, CO, SH, SZ, AL)
+  output <- plotInput(screecumulativethresholdobject, CO, SH, SZ, AL)
   # Get required data for plotting
   
   gu <- if(class(SH) == "character" & class(SZ) == "numeric" & class(AL) == "numeric") {
@@ -114,12 +112,15 @@ pcagridlegend<-function(screecumulativethresholdobject, x = "PC1", y = "PC2", CO
   test <- ggplot(data = output$data$pcdf, aes(x = .data[[x]], y = .data[[y]], color = output$CO, shape = output$SH, alpha = output$AL, size = output$SZ)) +
     geom_point() +
     gu +
+    # scale_fill_manual(values=c('red','blue','green','red','blue')) +
+    # scale_colour_manual(values=c('red','blue','green','red','blue')) +
+    scale_color_brewer(palette = "Set2") +
     labs(color = COtitle, shape = SHtitle, size = SZtitle, alpha = ALtitle ) +
     theme_minimal()
   return(test)
 }
 
-test <- pcagridlegend(screecumulativethresholdobject = output, x = "PC1", y = "PC2", CO = "covid_status", SH="sex", AL="age", SZ=0.1, COtitle = "COV", SHtitle= "gender", SZtitle=NULL, ALtitle="Age")
+test <- pcagridlegend(screecumulativethresholdobject = b, x = "PC1", y = "PC2", CO = "covid_status", SH="sex", AL="age", SZ=0.1, COtitle = "COV", SHtitle= "gender", SZtitle=NULL, ALtitle="Age")
 ```
 
 #working my_fn1, don't touch 

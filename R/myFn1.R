@@ -2,8 +2,11 @@
 
   myFn1 <- function(data, mapping, method="stat_ellipse"){
     p <- ggplot(data = data, mapping = mapping) +
-    theme_minimal()+
-    geom_hline(yintercept=0, linetype="dashed", color = "black")+
-    geom_vline(xintercept=0, linetype="dashed", colour= "black")
+    theme_minimal() +
+    geom_hline(yintercept=0, linetype="dashed", color = "black") +
+    geom_vline(xintercept=0, linetype="dashed", colour= "black") +
+    scale_color_brewer(palette = "Set2") +
+      # scale_fill_manual(values=c('red','blue', 'green')) +
+      # scale_colour_manual(values=c('red','blue', 'green'))
   return(p)
 }

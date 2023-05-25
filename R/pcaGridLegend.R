@@ -27,6 +27,10 @@ pcaGridLegend<-function(screeCumulativeThresholdObject, x = "PC1", y = "PC2", CO
   test <- ggplot(data = output$data$pcdf, aes(x = .data[[x]], y = .data[[y]], color = output$CO, shape = output$SH, alpha = output$AL, size = output$SZ)) +
     geom_point() +
     gu +
+    scale_alpha(range = c(0.1, 1)) +
+    # scale_fill_manual(values=c('red','blue','green','red','blue')) +
+    # scale_colour_manual(values=c('red','blue','green','red','blue')) +
+    scale_color_brewer(palette="Set2") +
     labs(color = COtitle, shape = SHtitle, size = SZtitle, alpha = ALtitle ) +
     theme_minimal()
   return(test)
