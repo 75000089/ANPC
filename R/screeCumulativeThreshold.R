@@ -23,6 +23,15 @@ screeplot <- ggplot(data = a$pcSum, aes(x = `rowname`, y = (`Proportion of Varia
               xlab("PC") +
               ylab("Proportion of Variance (%)")
 
+combinedScreeCumulative <- ggplot(a$pcSum)  +
+  geom_bar(aes(x = `rowname`, y = `Proportion of Variance`), stat = "identity", fill = "grey20", color = "black", alpha = 0.4) +
+  geom_line(aes(x = `rowname`, y = `Cumulative Proportion`), stat = "identity", color = "orange2", size = 2, group = 1) +
+  labs(title = "Screeplot and Cumulative Variance",
+       x = "PC", y = "Cumulative Variance (%)") +
+  scale_y_continuous(sec.axis = sec_axis(~.*0.5, name = "Proportion of Variance (%)")) +
+  theme(axis.title.y = element_text(color = "gray30"), axis.title.y.right = element_text(color = "orange3"))
+
+
 # #Make the threshold table
 
 thresholdTable <- a$pcSum[t,]%>%

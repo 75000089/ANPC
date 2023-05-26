@@ -48,8 +48,73 @@ unique(BIOspcglyc$sex)
 unique(BIOspcglyc$group)
 BIOspcglyc$covid_status<-ifelse(BIOspcglyc$group =="COVID-pos","covid", ifelse(BIOspcglyc$group=="preCOVID","control", "control"))
 ```
+#tests plotLoadingsGrid
+```{r}
+results<-prcomp(BIOspcglyc[,1:8], center = TRUE, scale. = TRUE)
+data<-cbind(as.data.frame(results[["x"]]), BIOspcglyc[,-1:-8])
+summary(results)->for.scree
+for.scree<-rownames_to_column(as.data.frame(t(for.scree$importance)))%>% mutate(across(where(is.double), ~.x*100))
 
-#tests
+df <- as.data.frame(results$rotation)
+symmetric_limits <- function (x) 
+{
+    max <- max(abs(x))
+    c(-max, max)
+}
+
+#functions to feed into ggpairs
+my_fn2 <- function(data, mapping, ...){
+  p <- ggplot(data = df, mapping = mapping) + 
+    #geom_point() + 
+    #geom_text(label=rownames(df), hjust=0, vjust=0, position=position_dodge(width=0.9))+
+    scale_x_continuous(limits = symmetric_limits) +
+  scale_y_continuous(limits = symmetric_limits) +
+    #stat_ellipse(aes(group=interaction(df$covid_status, color=df$covid_status), color=df$covid_status))+
+  theme_minimal()+
+    theme(text = element_text(size = 3))+
+  geom_hline(yintercept=0, linetype="dashed", color = "black")+
+  geom_vline(xintercept=0, linetype="dashed", colour= "black")
+  p
+}  
+
+##ggpairs plot with ellipses using ggpairs and predefined functions
+t<-4
+  
+p1 <- GGally::ggpairs(df[,1:t],
+columnLabels = c("PC1", "PC2", "PC3", "PC4"),
+              diag="blank",
+              upper="blank",
+              #upper=list(continuous =my_fn1),
+              lower=list(continuous =my_fn2),
+#legend = TRUE, progress = F, switch="both") + 
+#legend = grab_legend(test), 
+progress = F, switch="both") + geom_point(color= "red", size = 0.5)+
+  geom_text(aes(label = rownames(df)), size = 2, colour = "red", hjust=0, vjust=0)+
+ theme_bw() + 
+                  theme(strip.background = element_rect(fill = "white"),axis.text.x=(element_text(size=rel(0.7), angle=0)),
+                  axis.text.y=(element_text(size=rel(0.7), angle=0)), panel.grid.major = element_blank(),
+                  panel.grid.minor = element_blank(), panel.border = element_rect(fill = NA,colour = "grey35"))
+
+p1
+
+#try get rid of blanksquares
+ gpairs_lower <- function(g){
+  g$plots <- g$plots[-(1:g$nrow)]
+  g$yAxisLabels <- g$yAxisLabels[-1]
+  g$nrow <- g$nrow -1
+
+  g$plots <- g$plots[-(seq(g$ncol, length(g$plots), by = g$ncol))]
+  g$xAxisLabels <- g$xAxisLabels[-g$ncol]
+  g$ncol <- g$ncol - 1
+
+  g
+}
+
+(gpairs_lower(p1))
+ 
+ plotLoadingGrid(screeCumulativeThresholdObject = b)
+```
+#tests pcagrid
 ```{r}
 loadPackages(myPackages = c("ggplot2",
                             "ggplotly",
@@ -83,22 +148,11 @@ pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ 
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = "age", AL = "bmi", COtitle = "covid")
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = "age", AL = "bmi", COtitle = "covid")
 pcaGrid(screeCumulativeThresholdObject = b, CO = "work_activity", SH = NULL, SZ = 5, AL = 1, COtitle = "covid")
+
+plotLoadingsGrid()
 ```
 #combined scree and cumulative plot
 ```{r}
-ggplot(data1, aes(x = date)) +
-  geom_line(aes(y = x_r), size = 2, color = "red") + 
-  geom_line(aes(y = reer/scale), size = 2, color = "blue") +
-  scale_y_continuous(
-    name = "X/GDP",
-    sec.axis = sec_axis(~.*scale, name = "REER")
-  ) +   
-  theme_bw() +
-  theme(
-    axis.title.y = element_text(color = "red", size = 13),
-    axis.title.y.right = element_text(color = "blue", size = 13)
-  ) +
-  ggtitle("Export Ratio and Real Effective Exchange Rate")
 
 ttt <- function(pcResultsObject, cutoff = 99){
 
@@ -106,45 +160,20 @@ ttt <- function(pcResultsObject, cutoff = 99){
   #t <- length(which(a$pcSum$`Cumulative Proportion` < cutoff))
 
 #Make cumulative variance plot
-coeff=0.5
-cumulativeVariance <- ggplot(data = a$pcSum, aes(x = `rowname`, y= a$pcdf$`Cumulative Proportion`)) +
-                      geom_line( size = 2, color = a$pcdf$`Cumulative Proportion`) + 
-                      geom_line(aes(y = a$pcdf$`Proportion of Variance`), size = 2, color = a$pcdf$`Proportion of Variance`) +
-                      scale_y_continuous(
-                        # Features of the first axis
-                        name = "Cumulative Variance Explained (%)",
-                        # Add a second axis and specify its features
-                        sec.axis = sec_axis(~.*coeff, name="Propportion of Variance (%)")) + 
-                      #theme_ipsum() +
-                      theme(axis.title.y = element_text(color = a$pcdf$`Cumulative Proportion`, size=13),
-                            axis.title.y.right = element_text(color = a$pcdf$`Proportion of Variance`, size=13)) +
-                      ggtitle("Variance") +
-                      xlab("PC") 
-  
-  scale = 0.5
 
-ggplot(a$pcSum, aes(x = `rowname`, y = `Cumulative Proportion`)) +
-  geom_line(aes(color = "red")) +
-  geom_line(aes(y = `Proportion of Variance`, color = "Cumulative Proportion")) +
-  scale_y_continuous(sec.axis = sec_axis(~.*scale, name = "Proportion of Variance (%)")) +
-  labs(x = "PC", y = "Cumulative Variance (%)", color = "") +
-  scale_color_manual(values = c("orange2", "gray30")) +
+# Plotting Charts and adding a secondary axis
+
+ggp <- ggplot(a$pcSum)  + 
+  geom_bar(aes(x=`rowname`, y=`Proportion of Variance`),stat="identity", fill="grey20",colour="black", alpha = 0.4)+
+  geom_line(aes(x=`rowname`, y=`Cumulative Proportion`),stat="identity",color="orange2",size=2, group = 1)+
+  labs(title= "Screeplot and Cumulative Variance",
+       x = "PC",y = "Cumulative Variance (%)")+
+  scale_y_continuous(sec.axis = sec_axis(~.*0.5, name = "Proportion of Variance (%)"))+
   theme(
     axis.title.y = element_text(color = "gray30"),
     axis.title.y.right = element_text(color = "orange3")
   )
-
-print(pkpd)
-  # cumulativeVariance <- ggplot(data = a$pcSum, aes(x = `rowname`)) +
-  #   geom_point(aes(y = `Cumulative Proportion`), colour = "blue") +
-  #   #geom_line(group = 1, colour = "blue") +
-  #   geom_point(aes(y = (`Proportion of Variance`)), colour = "red") +
-  #   #geom_line(group = 1, colour = "red") +
-  #   ggtitle("Cumulative Variance and Screeplot") +   
-  #   theme_bw() +
-  #   theme(axis.title.y = element_text(color = "red", size = 13),
-  #   axis.title.y.right = element_text(color = "blue", size = 13)) +
-  #   xlab("PC") 
+ggp
    
 return(cumulativeVariance)
 }
@@ -338,5 +367,14 @@ pcagrid(pcresultobject = a, colour="covid_status", SH=NULL, SZ=1, AL=0.4)
 # inputData <- plotinput(data = aaMeta1, SZ = aaMeta1$sex, SH = aaMeta1$age, AL = 0.4)
 # 
 # append(myList, item, after = index)
+```
+
+```{r}
+oplsda <- metabom8::opls(BIOspcglyc[,1:8], BIOspcglyc$covid_status, maxPCo = 2, cv = list(method = "MC",k = 112, split = 2/3), plotting=TRUE) 
+ plotscores(oplsda) 
+ pcA <- metabom8::pca(BIOspcglyc[,1:8], pc=2)
+ plotload_cat(pcA, an=list(colnames(BIOspcglyc[ ,1:8])))
+ 
+ 
 ```
 
