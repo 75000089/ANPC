@@ -5,11 +5,11 @@ output <- screeCumulativeThresholdObject
 df <- as.data.frame(output$data$loadings)
 thresh <- output$data$threshold
 
-symmetric_limits <- function (x)
-{
-  max <- max(abs(x))
-  c(-max, max)
-}
+# symmetric_limits <- function (x)
+# {
+#   max <- max(abs(x))
+#   c(-max, max)
+# }
 
 title <- list()
 for (i in 1:thresh) {

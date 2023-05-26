@@ -1,5 +1,5 @@
 myFn2 <- function(data, mapping){
-  p <- ggplot(data = df, mapping = mapping) +
+  p <- ggplot(data = data, mapping = mapping) +
     scale_x_continuous(limits = symmetric_limits) +
     scale_y_continuous(limits = symmetric_limits) +
     theme_minimal()+
