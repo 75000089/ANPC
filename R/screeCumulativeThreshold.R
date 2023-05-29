@@ -1,3 +1,18 @@
+#' Screeplot, Cumulative Variance and Threshold
+#'
+#' @param pcresultsObject An object computed from the pcResults function.
+#' @param cutoff A numeric value representing the maximum desired percentage of cumulative variance explained. Default is 99 (99%).
+#'
+#' @return A list of objects (data and plots).
+#' @param cumulativeVariance The individual cumulative variance plot.
+#' @param screeplot The individual scree plot.
+#' @param combinedScreeCumulative The scree and cumulative variance on the same plot with dual y-axis.
+#' @param screeCumulativeThresholdPlot Single figure including all plots and tables computed in this function.
+#' @param thresholdTable Table containing the number of principal components used to explain the \code{cutoff} with summary information.
+#' @param t Numeric for the threshold number of principal components.
+#' @examples
+
+
 #threshold and screeplot, cumulative variance and threshold figures
 
 screeCumulativeThreshold <- function(pcResultsObject, cutoff = 99){

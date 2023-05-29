@@ -1,4 +1,12 @@
-#This function handles the shape (SH), size (SZ) and alpha (AL) input for the pcagrid and pcaGridLegend
+#' Plot input for ggpairs objects.
+#'
+#' This function handles the shape (SH), size (SZ) and alpha (AL) input for the ggpairs and ggplot objects. Each may be either a numeric or a metadata variable such as age, gender, bmi etc.
+#' @param CO Colour.
+#' @param SZ Size.
+#' @param AL Alpha.
+#' @param SH Shape.
+#' @return A list of objects for ggplot and ggpairs objects.
+
 
 plotInput<- function(screeCumulativeThresholdObject, CO, SH, SZ, AL){
 

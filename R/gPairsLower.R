@@ -1,4 +1,8 @@
-#remove blank square from PCAgrid, the diagonal and top half in the below code where g is the ggpairs object
+#' Blank panel remover.
+#'
+#' This function removes the blank squares (diagonal and upper half) from pcaGrid and plotLoadingsGrid.
+#' @param g the ggpairs object (pcaGrid or plotLoadingsGrid plot).
+
 gPairsLower <- function(g){
   g$plots <- g$plots[-(1:g$nrow)]
   g$yAxisLabels <- g$yAxisLabels[-1]

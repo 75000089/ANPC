@@ -1,3 +1,25 @@
+#' Grid of PCAs
+#'
+#' Grid of PCAs with ellipses up to the threshold number, using the GGally:ggpairs function.
+#'
+#' Any aesthetic set to a numeric value will not appear in the legend. Any aesthetic set to a variable requires the legend title be specified.
+#'
+#' @param screeCumulativeThresholdObject An object computed from the screeCumulativeThreshold function.
+#' @param CO A metadata variable represented by colour in the pca grid. Must be defined by as a variable. Must have a discrete scale.
+#' @param SZ Either a numeric or a metadata variable represented by size in the pca grid. Default value of 1.
+#' @param AL Either a numeric or a metadata variable represented by alpha in the pca grid. Default value of 0.5.
+#' @param SH Either a numeric or a metadata variable represented by shape in the pca grid. Default is NULL.
+#' @param COtitle Character/s representing the Colour legend title.
+#' @param SZtitle Character/s representing the Size legend title.
+#' @param ALtitle Character/s representing the Alpha legend title.
+#' @param SHtitle Character/s representing the Shape legend title.
+#'
+#' @return grid of PCAs up to the threshold number.
+#' @examples
+egA <- pcResults(BIOspcglyc[,1:8], annotation = BIOspcglyc[,-1:-8])
+egB <- screeCumulativeThreshold(pcResultsObject = egA, cutoff = 95)
+pcaGrid(screeCumulativeThresholdObject = egB, CO = "covid_status", SZ = 0.5, COtitle = "Covid Status")
+
 #Make PCA grid with ggpairs
 
 pcaGrid <-function(screeCumulativeThresholdObject, CO, SH = NULL, SZ = 1, AL = 0.5, COtitle, SHtitle = "NULL", SZtitle = "NULL", ALtitle = "NULL"){
@@ -10,7 +32,7 @@ pcaGrid <-function(screeCumulativeThresholdObject, CO, SH = NULL, SZ = 1, AL = 0
 
   title <- list()
   for (i in 1:thresh) {
-    title[[i]] <- paste0('PC', i, ' (', round(output$data$explainedVarianceRatio[i], 1), '%)')
+    title[[i]] <- paste0('PC', i, ' (', round(output$data$pcSum$`Proportion of Variance`[i], 1), '%)')
   }
   title<-unlist(title)
 
