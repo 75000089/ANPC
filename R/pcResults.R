@@ -19,9 +19,9 @@
 
 #calculate Principal Components using prcomp
 
-pcResults <- function(data, annotation, center = TRUE, scale = TRUE) {
+pcResults <- function(data, annotation, center = TRUE, scale. = TRUE) {
 
-  results <- prcomp(data, center = center, scale. = scale)
+  results <- prcomp(data, center = center, scale. = scale.)
 
   pcSum <- rownames_to_column(as.data.frame(t(summary(results)[["importance"]]))) %>%
             mutate(across(where(is.double), ~.x*100))
@@ -34,7 +34,7 @@ pcResults <- function(data, annotation, center = TRUE, scale = TRUE) {
 
   center <- results[["center"]]
 
-  scale <- results [["scale"]]
+  scale <- results[["scale"]]
 
   pcdf<- cbind(as.data.frame(scores), annotation)
 

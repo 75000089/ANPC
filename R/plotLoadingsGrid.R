@@ -6,9 +6,9 @@
 #'
 #' @return grid of loadings plots, up to the threshold number.
 #' @examples
-egA <- pcResults(BIOspcglyc[,1:8], annotation = BIOspcglyc[,-1:-8])
-egB <- screeCumulativeThreshold(pcResultsObject = egA, cutoff = 95)
-egD <- plotLoadingGrid(screeCumulativeThresholdObject = egB)
+#egA <- pcResults(BIOspcglyc[,1:8], annotation = BIOspcglyc[,-1:-8])
+#egB <- screeCumulativeThreshold(pcResultsObject = egA, cutoff = 95)
+#egD <- plotLoadingGrid(screeCumulativeThresholdObject = egB)
 
 #Make PCA grid with ggpairs
 plotLoadingGrid <- function(screeCumulativeThresholdObject){
