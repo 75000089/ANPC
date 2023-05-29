@@ -33,8 +33,8 @@ plotLoadingGrid <- GGally::ggpairs(df[,1:thresh],
                            lower=list(continuous =myFn2),
                            #legend = grab_legend(test),
                            progress = F, switch="both") +
-                           geom_point(color= "red", size = 0.5) +
-                           geom_text(aes(label = rownames(df)), size = 2, colour = "red", hjust=0, vjust=0) +
+                           geom_point(color= "blue", size = 0.5) +
+                           geom_text(aes(label = rownames(df)), size = 2, colour = "blue", hjust=0, vjust=0) +
                            theme_bw() +
                            theme(strip.background = element_rect(fill = "white"), axis.text.x=(element_text(size=rel(0.7), angle=0)),
                                                     axis.text.y=(element_text(size=rel(0.7), angle=0)), panel.grid.major = element_blank(),

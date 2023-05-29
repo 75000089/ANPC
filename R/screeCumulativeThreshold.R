@@ -66,6 +66,7 @@ a <- append(a, list(threshold = t))
 
 return(list(data = a,
             plots = list(screeCumulativeThreshold = screeCumulativeThresholdPlot,
+                         combinedScreeCumulative = combinedScreeCumulative,
                          screeplot = screeplot,
                          cumulativeVariance = cumulativeVariance,
                          thresholdTable = thresholdTable)))

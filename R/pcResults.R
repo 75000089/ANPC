@@ -15,8 +15,7 @@
 #' @param center The centering used.
 #' @param scale The scaling used
 #' @examples
-#' pcResults(1, 1)
-#' add(10, 1)
+
 
 #calculate Principal Components using prcomp
 
