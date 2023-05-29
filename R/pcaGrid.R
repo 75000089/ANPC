@@ -16,9 +16,9 @@
 #'
 #' @return grid of PCAs up to the threshold number.
 #' @examples
-egA <- pcResults(BIOspcglyc[,1:8], annotation = BIOspcglyc[,-1:-8])
-egB <- screeCumulativeThreshold(pcResultsObject = egA, cutoff = 95)
-pcaGrid(screeCumulativeThresholdObject = egB, CO = "covid_status", SZ = 0.5, COtitle = "Covid Status")
+#egA <- pcResults(BIOspcglyc[,1:8], annotation = BIOspcglyc[,-1:-8])
+#egB <- screeCumulativeThreshold(pcResultsObject = egA, cutoff = 95)
+#pcaGrid(screeCumulativeThresholdObject = egB, CO = "covid_status", SZ = 0.5, COtitle = "Covid Status")
 
 #Make PCA grid with ggpairs
 

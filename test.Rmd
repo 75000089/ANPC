@@ -63,7 +63,7 @@ loadPackages(myPackages = c("ggplot2",
                             "gridExtra",
                             "rlist"))
 #1) create pcresults object
-a<- pcResults(BIOspcglyc[,1:8], annotation = BIOspcglyc[,-1:-8])
+a <- pcResults(BIOspcglyc[,1:8], annotation = BIOspcglyc[,-1:-8])
 
 #2) create screeCumulativeThresholdObject
 b <- screeCumulativeThreshold(pcResultsObject = a, cutoff = 95)
@@ -74,7 +74,7 @@ pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", COtitle = "covi
 
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", COtitle = "covid")
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SZ = "age", AL = "bmi", COtitle = "covid", SZtitle = "Age")
-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SZ = 0.5, COtitle = "covid", SZtitle = "Age")
+pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SZ = 5, COtitle = "covid", SZtitle = "Age")
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = "age", AL = 1, COtitle = "covid")
 
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = "age", AL = 1, COtitle = "covid")
