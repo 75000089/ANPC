@@ -94,7 +94,7 @@ pcaGrid(screeCumulativeThresholdObject = b, CO = "work_activity", SH = NULL, SZ 
 ```{r}
 p2<- plotLoadingGrid(screeCumulativeThresholdObject = b)
 ```
-#multiplot
+#multiplot (works with grids)
 ```{r}
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   library(grid)

@@ -20,7 +20,7 @@
 #egB <- screeCumulativeThreshold(pcResultsObject = egA, cutoff = 95)
 #pcaGrid(screeCumulativeThresholdObject = egB, CO = "covid_status", SZ = 0.5, COtitle = "Covid Status")
 
-#Make PCA grid with ggpairs
+#PCA grid with ggpairs
 
 pcaGrid <-function(screeCumulativeThresholdObject, CO, SH = NULL, SZ = 1, AL = 0.5, COtitle, SHtitle = "NULL", SZtitle = "NULL", ALtitle = "NULL", gridTitle = "PCA Grid"){
 

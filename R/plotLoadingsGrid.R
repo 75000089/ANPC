@@ -24,7 +24,7 @@ for (i in 1:thresh) {
 }
 title<-unlist(title)
 
-#create grid
+#create loadings plot grid
 gridTitle = gridTitle
 
 plotLoadingGrid <- GGally::ggpairs(df[,1:thresh],
