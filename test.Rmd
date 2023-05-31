@@ -18,6 +18,8 @@ for(i in functionList){
 <!-- g<- pcagrid(threshold, explainedvarianceratio, pcdf, my_fn1) -->
 <!-- gpairs_lower(g) -->
 
+
+
 #load data to test functions
 ```{r}
 ann<-local(get(load("~/OneDrive - Murdoch University/datasets/covid19/bioGune/dataElements/covid19_bioGune_PLA_ANN.daE")))
@@ -61,7 +63,8 @@ loadPackages(myPackages = c("ggplot2",
                             "GGally",
                             "cowplot",
                             "gridExtra",
-                            "rlist"))
+                            "rlist",
+                            "ggrepel"))
 #1) create pcresults object
 a <- pcResults(BIOspcglyc[,1:8], annotation = BIOspcglyc[,-1:-8])
 
@@ -70,11 +73,11 @@ b <- screeCumulativeThreshold(pcResultsObject = a, cutoff = 95)
 
 #3) gridplot tests various combinations
 ##working
-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", COtitle = "covid")
+a1<-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", COtitle = "covid")
 
-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", COtitle = "covid")
-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SZ = "age", AL = "bmi", COtitle = "covid", SZtitle = "Age")
-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SZ = 5, COtitle = "covid", SZtitle = "Age")
+a3 <-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SZ = "age", AL = "bmi", COtitle = "Covid", SZtitle = "Age", ALtitle = "BMI")
+
+a2 <- pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SZ = 5, COtitle = "covid", SZtitle = "Age")
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = "age", AL = 1, COtitle = "covid")
 
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = "age", AL = 1, COtitle = "covid")
@@ -82,14 +85,59 @@ pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ =
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = "age", AL = 1, COtitle = "covid")
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = 5, AL = "age", COtitle = "covid")
 pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = "sex", SZ = "age", AL = "bmi", COtitle = "covid")
-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = "age", AL = "bmi", COtitle = "covid")
+p1 <-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SH = NULL, SZ = "age", AL = "bmi", COtitle = "covid")
 pcaGrid(screeCumulativeThresholdObject = b, CO = "work_activity", SH = NULL, SZ = 5, AL = 1, COtitle = "covid")
 
-plotLoadingsGrid()
+
 ```
 #tests plotLoadingsGrid
 ```{r}
- plotLoadingGrid(screeCumulativeThresholdObject = b)
+p2<- plotLoadingGrid(screeCumulativeThresholdObject = b)
+```
+#multiplot
+```{r}
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+
+a1<-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", COtitle = "covid")
+
+a3 <-pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SZ = "age", AL = "bmi", COtitle = "Covid", SZtitle = "Age", ALtitle = "BMI")
+
+a2 <- pcaGrid(screeCumulativeThresholdObject = b, CO = "covid_status", SZ = 5, COtitle = "covid", SZtitle = "Age")
+multiplot(plotlist = list(p1, p2))
 ```
 
 
@@ -375,4 +423,26 @@ p1
 (gpairs_lower(p1))
  
 ```
+#kmeans cluster
+```{r}
+library(FactoMineR)
+library(factoextra)
+library(stats)
 
+#1) create pcresults object
+a <- pcResults(BIOspcglyc[,1:8], annotation = BIOspcglyc[,-1:-8])
+
+#2) determine number of clusters
+fviz_nbclust(a$pcdf[,1:2], FUNcluster = kmeans, method="wss", verbose = FALSE, print.summary = TRUE)
+
+#3) calculate clusters
+set.seed(123)
+trial <- kmeans(x = a$pcdf[,1:2], centers = 4, nstart = 1)
+
+#4) visualize clusters
+fviz_cluster(object = trial, data = a$pcdf[,1:2])
+```
+```{r}
+trial <- kmeans(x = a$pcdf[,1:8], centers = 4, nstart = 25)
+fviz_cluster(object = trial, data = a$pcdf[,1:8])
+```

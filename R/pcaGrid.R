@@ -22,7 +22,7 @@
 
 #Make PCA grid with ggpairs
 
-pcaGrid <-function(screeCumulativeThresholdObject, CO, SH = NULL, SZ = 1, AL = 0.5, COtitle, SHtitle = "NULL", SZtitle = "NULL", ALtitle = "NULL"){
+pcaGrid <-function(screeCumulativeThresholdObject, CO, SH = NULL, SZ = 1, AL = 0.5, COtitle, SHtitle = "NULL", SZtitle = "NULL", ALtitle = "NULL", gridTitle = "PCA Grid"){
 
   output <- plotInput(screeCumulativeThresholdObject, CO, SH, SZ, AL)
   thresh <- output$data$threshold
@@ -57,9 +57,11 @@ pcaGrid <-function(screeCumulativeThresholdObject, CO, SH = NULL, SZ = 1, AL = 0
         }
 
 #create the PCA grid
+  gridTitle = gridTitle
 
   pcagridplot<-GGally::ggpairs(data = output$data$pcdf[,1:thresh],
                                columnLabels = c(title),
+                               title = gridTitle,
                                diag="blank",
                                upper="blank",
                                #upper=list(continuous = my_fn1),

@@ -11,7 +11,7 @@
 #egD <- plotLoadingGrid(screeCumulativeThresholdObject = egB)
 
 #Make PCA grid with ggpairs
-plotLoadingGrid <- function(screeCumulativeThresholdObject){
+plotLoadingGrid <- function(screeCumulativeThresholdObject, gridTitle = "Loadings Plot Grid"){
 
 output <- screeCumulativeThresholdObject
 df <- as.data.frame(output$data$loadings)
@@ -25,16 +25,21 @@ for (i in 1:thresh) {
 title<-unlist(title)
 
 #create grid
+gridTitle = gridTitle
+
 plotLoadingGrid <- GGally::ggpairs(df[,1:thresh],
                            columnLabels = c(title),
+                           title = gridTitle,
                            diag="blank",
                            upper="blank",
                            #upper=list(continuous =my_fn1),
                            lower=list(continuous =myFn2),
                            #legend = grab_legend(test),
                            progress = F, switch="both") +
-                           geom_point(color= "blue", size = 0.5) +
-                           geom_text(aes(label = rownames(df)), size = 2, colour = "blue", hjust=0, vjust=0) +
+                           geom_point(color= "blue", size = 1) +
+                           geom_text_repel(aes(label = rownames(df)), size = 3.5) +
+                           #geom_text_repel(aes(label = rownames(df)), size = 3, box.padding = unit(0.35, "lines"), point.padding = unit(0.3, "lines")) +
+                           #geom_text(aes(label = rownames(df)), size = 2, colour = "blue", hjust=0, vjust=0) +
                            theme_bw() +
                            theme(strip.background = element_rect(fill = "white"), axis.text.x=(element_text(size=rel(0.7), angle=0)),
                                                     axis.text.y=(element_text(size=rel(0.7), angle=0)), panel.grid.major = element_blank(),
