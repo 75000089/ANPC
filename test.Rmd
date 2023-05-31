@@ -1,25 +1,10 @@
+```{r}
 functionDir <- "./R/"
 functionList <- list.files(path = functionDir)
 for(i in functionList){
   source(paste0(functionDir,i))
 }
-
-<!-- source("./R/PrincipalComponentCalculation.R") -->
-<!-- source("./R/ExplainedVarainceCalculation.R") -->
-<!-- results <- pcresults(data = allData) -->
-<!-- explainedvarianceratio <- explained_variance_ratio(results) -->
-<!-- pcsum <- pcsummary(results) -->
-<!-- threshold <- threshold(cutoff, pcsum) -->
-<!-- screecumulativethresholdplot <- screecumulativethreshold(pcsum, threshold) -->
-<!-- pcdf <- pcdf(results) -->
-<!--  <- plotinput() -->
-<!-- pcagridlegend <- pcagridlegend(pcdf, colour, SH, AL, SZ) -->
-<!-- my_fn1 <- my_fn1(pcdf) -->
-<!-- g<- pcagrid(threshold, explainedvarianceratio, pcdf, my_fn1) -->
-<!-- gpairs_lower(g) -->
-
-
-
+```
 #load data to test functions
 ```{r}
 ann<-local(get(load("~/OneDrive - Murdoch University/datasets/covid19/bioGune/dataElements/covid19_bioGune_PLA_ANN.daE")))
